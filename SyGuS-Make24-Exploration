@@ -1,0 +1,13 @@
+
+(set-logic LIA)
+(synth-fun constant ((a Int) (b Int) (c Int) (d Int)) Int
+    ((I Int))
+    ((I Int (a b c d
+             (+ I I)
+             (- I I)
+             (* I I)
+             (div I I)
+                 ))
+          ))
+(constraint (= (constant 2 8 6 9) 24))
+(check-synth)

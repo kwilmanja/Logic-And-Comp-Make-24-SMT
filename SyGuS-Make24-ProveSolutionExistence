@@ -1,0 +1,79 @@
+;;capable of proving if there exists a solution or not
+
+(set-logic NRA)
+;;represents an operation over two real numbers
+(synth-fun f-combine ((i1 Real) (i2 Real)) Real
+    ((I Real))
+    ((I Real (
+             (+ i1 i2)
+             (- i1 i2)
+             (- i2 i1)
+             (/ i1 i2)
+             (/ i2 i1)
+             (* i1 i2)
+             ))))
+             
+;;represents an operation over two real numbers
+(synth-fun f1 ((l Real) (m Real)) Real
+    ((I Real))
+    ((I Real (
+             (+ l m)
+             (- l m)
+             (- m l)
+             (/ l m)
+             (/ m l)
+             (* l m)
+             ))))
+
+;;represents an operation over two real numbers  
+(synth-fun f2 ((n Real) (o Real)) Real
+    ((I Real))
+    ((I Real (
+             (+ n o)
+             (- n o)
+             (- o n)
+             (/ n o)
+             (/ o n)
+             (* n o)
+             ))))
+
+;;satisfies if either possible formula template generates 24
+(define-fun f ((a Real) (b Real) (c Real) (d Real)) Bool
+    (or
+        (= (f-combine (f1 a (f2 b c)) d) 24)
+        (= (f-combine (f1 a b) (f2 c d)) 24)
+    ))
+  
+;;satisfies if any permutation of numbers creates possible solution  
+(define-fun final ((a Real) (b Real) (c Real) (d Real)) Bool
+    (or
+        (f a b c d)
+        (f a b d c)
+        (f a c b d)
+        (f a c d b)
+        (f a d b c)
+        (f a d c b)
+        (f b a c d)
+        (f b a d c)
+        (f b c a d)
+        (f b c d a)
+        (f b d a c)
+        (f b a c a)
+        (f c a b d)
+        (f c a d b)
+        (f c b a d)
+        (f c b d a)
+        (f c d a b)
+        (f c d b a)
+        (f d a b c)
+        (f d a c b)
+        (f d b a c)
+        (f d b c a)
+        (f d c a b)
+        (f d c b a)
+    ))
+
+(constraint (let ((a 2) (b 1) (c 1) (d 11)) 
+         (final a b c d)))
+
+(check-synth)

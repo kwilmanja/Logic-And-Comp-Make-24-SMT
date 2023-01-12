@@ -1,0 +1,54 @@
+(set-logic NRA)
+
+(synth-fun f-combine ((i1 Real) (i2 Real)) Real
+    ((I Real))
+    ((I Real (
+             (+ i1 i2)
+             (- i1 i2)
+             (- i2 i1)
+             (/ i1 i2)
+             (/ i2 i1)
+             (* i1 i2)
+             ))))
+             
+(synth-fun f1 ((a Real) (b Real)) Real
+    ((I Real))
+    ((I Real (
+             (+ a b)
+             (- a b)
+             (- b a)
+             (/ a b)
+             (/ b a)
+             (* a b)))))
+             
+(synth-fun f2 ((c Real) (d Real)) Real
+    ((I Real))
+    ((I Real (
+             (+ c d)
+             (- c d)
+             (- d c)
+             (/ c d)
+             (/ d c)
+             (* c d)))))
+
+(define-fun fv1 ((a Real) (b Real) (c Real) (d Real)) Real
+(f-combine (f1 a b) (f2 c d)))
+
+;(synth-fun fv2 ((a Real) (b Real) (c Real) (d Real)) Real
+;    ((I Real))
+;    ((I Real ( 
+;        (f-combine (f1 a b) (f2 c d))
+;        (f-combine (f1 a (f2 b c)) d)
+;        ))))
+
+
+;(synth-fun final ((a Real) (b Real) (c Real) (d Real)) Real
+;    ((I Real))
+;    ((I Real (
+;        (f a b c d)
+;        - list out permutations -
+;        ))))
+
+
+(constraint (= (fv1 3 9 2 4) 24))
+(check-synth)
